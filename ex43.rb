@@ -103,10 +103,6 @@ class Central_Corridor < Scene
       puts "putting him down, then jump through the Weapon Armory door."
       return :laser_weapon_armory
     elsif input.downcase.include?("let's fight")
-      $gothon = Fighter.new(rand(75..90), rand(7..9))
-      $hero = Fighter.new(rand(35..45), rand(15..18))
-      $walka = Fight.new
-      gracze = $walka.fight($gothon, $hero)
       return :fight
     else
       puts "Does not compute!"
@@ -227,12 +223,13 @@ class Escape_Pod < Scene
 end
 
 class Fighter
-  attr_accessor :health, :power
+  attr_accessor :name, :health, :power
 
-  def initialize(health, power)
+  def initialize(name, health, power)
+    @name = name
     @health = health
     @power = power
-    puts @health, @power
+    puts "#{@name}: #{@health} health points, #{@power} power points"
   end
 
   gothons = ["Hrothgarr Stonemug", "Arthas Menethil", "Illidan Stormrage",
@@ -243,19 +240,19 @@ class Fighter
   $gothon = gothons.sample
 end
 
-class Fight
-  def enter
-
-   def fight(gothon, hero)
-    while gothon.health > 0 && hero.health > 0
-      gothon.health -= hero.power
-      hero.health -= gothon.power
-      puts "#{$gothon}:  #{gothon.health} health points"
-      puts "You: " + "#{hero.health} health points"
-      if gothon.health > 0
-          "#{$gothon} win"
+class Fight < Scene
+  def enter()
+    @gothon = Fighter.new($gothon, rand(75..90), rand(7..9))
+    @hero = Fighter.new("You", rand(35..45), rand(15..18))
+    while @gothon.health > 0 && @hero.health > 0
+      @gothon.health -= @hero.power
+      @hero.health -= @gothon.power
+      puts "#{$gothon}:  #{@gothon.health} health points"
+      puts "You: " + "#{@hero.health} health points"
+      if @gothon.health > 0
+          "#{@gothon} win"
           return :death
-        elsif hero.health > 0
+        elsif @hero.health > 0
          puts "You lucky bastard!"
          return :laser_weapon_armory
         else
@@ -265,10 +262,9 @@ class Fight
     end
   end
 end
-end
 
 
-class Finished < Scenes
+class Finished < Scene
   def enter()
     puts "You won! Good job."
   end
