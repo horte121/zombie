@@ -242,23 +242,24 @@ end
 
 class Fight < Scene
   def enter()
-    @gothon = Fighter.new($gothon, rand(75..90), rand(7..9))
-    @hero = Fighter.new("You", rand(35..45), rand(15..18))
-    while @gothon.health > 0 && @hero.health > 0
-      @gothon.health -= @hero.power
-      @hero.health -= @gothon.power
-      puts "#{$gothon}:  #{@gothon.health} health points"
-      puts "You: " + "#{@hero.health} health points"
-      if @gothon.health > 0
-          "#{@gothon} win"
-          return :death
-        elsif @hero.health > 0
-         puts "You lucky bastard!"
-         return :laser_weapon_armory
-        else
-         puts "You're both dead"
-         return :death
-      end
+    gothon = Fighter.new($gothon, rand(75..90), rand(7..9))
+    hero = Fighter.new("You", rand(35..45), rand(15..18))
+    puts "____________FIGHT!___________"
+    while gothon.health > 0 && hero.health > 0
+      gothon.health -= hero.power
+      hero.health -= gothon.power
+      puts "#{$gothon}:  #{gothon.health} hp"
+      puts "You: #{hero.health} hp"
+    end
+    if gothon.health > 0
+        "#{$gothon} win"
+        return :death
+      elsif hero.health > 0
+       puts "You lucky bastard!"
+        return :laser_weapon_armory
+      else
+        puts "You're both dead"
+        return :death
     end
   end
 end
