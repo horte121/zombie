@@ -104,6 +104,8 @@ class Central_Corridor < Scene
       return :laser_weapon_armory
     elsif input.downcase.include?("let's fight")
       return :fight
+    elsif input.downcase.include?("cheat#0")
+      return :finished
     else
       puts "Does not compute!"
       return :central_corridor
@@ -203,8 +205,8 @@ class Escape_Pod < Scene
 
     good_pod = rand(1..5)
     print "[pod #]> "
-    input = $stdin.gets.chomp.to_i
-    if input == good_pod
+    input = $stdin.gets.chomp
+    if input == good_pod.to_s || input == "cheat#1"
       puts "You jump into pod %s and hit the eject button." % input
       puts "The pod easily slides out into space heading to"
       puts "the planet below.  As it flies to the planet, you look"
@@ -255,7 +257,7 @@ class Fight < Scene
         "#{$gothon} win"
         return :death
       elsif hero.health > 0
-       puts "You lucky bastard!"
+       puts "You win, lucky bastard!"
         return :laser_weapon_armory
       else
         puts "You're both dead"
